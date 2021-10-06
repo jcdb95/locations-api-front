@@ -12,6 +12,10 @@ export const detailsDialog = state => {
 
 export const createNewStationDialog = state => {
     return state.createNewStationDialog;
+}; 
+
+export const editStation = state => {
+    return state.editStation;
 };
 
 export const createNewProduct = state => {

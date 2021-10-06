@@ -1,17 +1,32 @@
 export const setList = (state, data) => {
-	const result = data.map(item => {
+	if(data.newLocation){
+		data.list.push(data.newLocation)
+	}
+	const result = data.list.map(item => {
 		return {...item, lat_long: [item.latitude, item.longitude]}
 	})
-	console.log("RESULT", result)
 	state.list = result; 
 };
 
 export const selectedStation = (state, data) => {
+	console.log(data);
 	state.selectedStation = data;
 }
 
 export const detailsDialog = (state, data) => {
 	state.detailsDialog = data;
+}
+
+export const editStation = (state) => {
+	state.editing = true
+	state.creatingDirection.id = state.selectedStation.id
+	state.creatingDirection.name = state.selectedStation.name
+	state.creatingDirection.address = state.selectedStation.address
+	state.creatingDirection.city = state.selectedStation.city
+	state.creatingDirection.latitude = state.selectedStation.latitude
+	state.creatingDirection.longitude = state.selectedStation.longitude
+	state.creatingDirection.prices = state.selectedStation.prices
+	state.creatingDirection.products = state.selectedStation.products
 }
 
 export const createNewStationDialog = (state, data) => {
@@ -96,10 +111,19 @@ export const addProductToStation = (state, data) => {
 
 }
 
-// SetLatAndLong
-
 export const SetLatAndLong = (state, data) => {
 	state.creatingDirection.latitude = data.lat;
 	state.creatingDirection.longitude = data.lng;
 }
 
+export const addStationToList = (state, data) => {
+	state.list.push(data);
+}
+
+export const editPrice = (state, data) => {
+	state.creatingDirection.prices[data.index].price = data.val
+}
+
+export const popStation = (state, data) => {
+	state.list = state.list.filter(el => { return el.id != data; });
+}

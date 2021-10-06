@@ -3,9 +3,10 @@ export default {
     selectedStation:null,
     detailsDialog:false,
     createNewStationDialog:false,
+    editStation:false,
     createNewProduct:false,
     editing:false,
-    auth:false,
+    auth:true,
     creatingDirection:{
         id:null,
         name:null,
@@ -15,6 +16,12 @@ export default {
         longitude:null,
         prices:[],
         products:[],
+    },
+    updatingStation:{
+        location_id: null,
+        new_product_price:null,
+        product_id:null,
+        new_location_name:null,
     },
     creatingProduct:{
         product_id: null,

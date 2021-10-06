@@ -48,13 +48,24 @@ export default {
     },
     mounted() {
         this.$store
-            .dispatch('stations/getStations')
-            .then(() => {
-                console.log(this.$store.getters['stations/list']);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        .dispatch('stations/getStations')
+        .then(() => {
+            console.log(this.$store.getters['stations/list']);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+        
+        this.$store.dispatch('stations/getAuth')
+        .then((isAuth)=>{
+            if(isAuth){
+                this.$store.commit('stations/auth', true)
+            }
+        })
+        .catch((error)=>{
+            this.$store.commit('stations/auth', false)
+            console.log(error)
+        })
     },
     methods: {
         centerUpdated(center) {
@@ -65,13 +76,17 @@ export default {
             this.$store.commit('stations/selectedStation', station);
         },
         addMarker(event) {
-            console.log(event);
-            this.$store.commit('stations/SetLatAndLong', event.latlng);
-            this.$store.commit('stations/createNewStationDialog', true);
+            if(this.auth){
+                this.$store.commit('stations/SetLatAndLong', event.latlng);
+                this.$store.commit('stations/createNewStationDialog', true);
+            }
         },
     },
     computed: {
-        ...mapGetters({ list: 'stations/list' }),
+        ...mapGetters({ 
+            list: 'stations/list',
+            auth: 'stations/auth' 
+        }),
     },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
     <transition name="modal">
         <div class="modal-mask fixed top-0 left-0 w-full h-full z-50 flex flex-col items-center justify-center">
-            <div class="bg-white w-auto h-auto p-8 m-6 rounded-md flex flex-col mx-auto justify-between">
+            <div class="bg-white w-full max-w-lg h-auto p-8 m-6 rounded-md flex flex-col mx-auto justify-between">
                 <div class="grid grid-flow-row grid-rows-1 gap-3 items-start justify-center text-left text-base">
                     <div><span class="text-xl font-bold pr-1">Station Name:</span> {{ selectedStation.name }}</div>
                     <div>
@@ -38,8 +38,22 @@
                     </div>
                 </div>
                 <div
+                    v-if="auth"
+                    @click="editStation"
+                    class="w-auto m-3 p-2  bg-blue-600 text-white flex items-center justify-center rounded-md shadow-md font-secondary-regular hover:shadow-lg md:transition-all md:duration-200 cursor-pointer font-bold"
+                >
+                    Edit Station
+                </div>
+                <div
+                    v-if="auth"
+                    @click="deleteStation"
+                    class="w-auto m-3 p-2  bg-blue-600 text-white flex items-center justify-center rounded-md shadow-md font-secondary-regular hover:shadow-lg md:transition-all md:duration-200 cursor-pointer font-bold"
+                >
+                    Delete Station
+                </div>
+                <div
                     @click="closeModal"
-                    class="w-auto m-3 p-2 mt-8 bg-red-600 text-white flex items-center justify-center rounded-md shadow-md font-secondary-regular hover:shadow-lg md:transition-all md:duration-200 cursor-pointer font-bold"
+                    class="w-auto m-3 p-2 mt-8 bg-yellow-600 text-white flex items-center justify-center rounded-md shadow-md font-secondary-regular hover:shadow-lg md:transition-all md:duration-200 cursor-pointer font-bold"
                 >
                     Close
                 </div>
@@ -56,11 +70,27 @@ export default {
             this.$store.commit('stations/detailsDialog', false);
             this.$store.commit('stations/selectedStation', null);
         },
+        editStation(){
+            this.$store.commit('stations/editStation');
+            this.$store.commit('stations/createNewStationDialog', true);
+        },
+        deleteStation(){
+            this.$store.commit('stations/popStation', this.selectedStation.id);
+            this.$store.commit('stations/detailsDialog', false);
+            this.$store.commit('stations/selectedStation', null);
+
+            // this.$store.dispatch('stations/deleteStation', {id: this.selectedStation.id})
+            // .finally(()=>{
+            //     this.$store.commit('stations/detailsDialog', false);
+            //     this.$store.commit('stations/selectedStation', null);
+            // })
+        }
     },
 
     computed: {
         ...mapGetters({
             selectedStation: 'stations/selectedStation',
+            auth: 'stations/auth'
         }),
     },
 };
